@@ -16,38 +16,31 @@ Cockpit packages.
 
 2. Reboot
 
+Steps 1 and 2 are enough when the CoreOS machine is only connected to through another host running Cockpit.
+
+If you want to also run a web server to log in directly on the CoreOS host:
+
 3. Enable password based SSH logins, unless you only use [SSO logins](https://cockpit-project.org/guide/latest/sso.html):
    ```
    echo 'PasswordAuthentication yes' | sudo tee /etc/ssh/sshd_config.d/02-enable-passwords.conf
    sudo systemctl try-restart sshd
    ```
 
-4. Run the Cockpit web service with this privileged container (as root):
+4. Run the Cockpit web service with a privileged container (as root):
    ```
-   podman container runlabel --name cockpit-ws RUN docker.io/cockpit/ws
+   podman container runlabel --name cockpit-ws RUN quay.io/cockpit/ws
    ```
 
 5. Make Cockpit start on boot:
    ```
-   podman container runlabel INSTALL docker.io/cockpit/ws
+   podman container runlabel INSTALL quay.io/cockpit/ws
    systemctl enable cockpit.service
    ```
 
-_Steps 3 to 5 are optional if the CoreOS machine will only be connected to from another host running Cockpit._
-
 Afterward, use a web browser to log into port `9090` on your host IP address as usual.
-
-# Cockpit Web Service Container on Atomic
-
-Fedora and Red Hat Enterprise Linux Atomic contains the Cockpit bridge (cockpit-bridge package) and basic pages (cockpit-system package). Thus you can connect from remote Cockpit hosts through ssh without further modification.
-
-These older operating systems use docker instead of podman and have an `atomic` command that wraps it. To start a web service directly on these hosts, run
-```
-atomic run cockpit/ws
-```
 
 ## More Info
 
  * [Cockpit Project](https://cockpit-project.org)
  * [Cockpit Development](https://github.com/cockpit-project/cockpit)
- * [cockpit/ws Docker hub page](https://hub.docker.com/r/cockpit/ws)
+ * [cockpit/ws quay.io page](https://quay.io/repository/cockpit/ws)
