@@ -1,8 +1,8 @@
 FROM registry.fedoraproject.org/fedora:35
 LABEL maintainer="cockpit-devel@lists.fedorahosted.org"
-LABEL VERSION=267
+LABEL VERSION=268.1
 
-ARG VERSION=267
+ARG VERSION=268.1
 
 ADD . /container
 
