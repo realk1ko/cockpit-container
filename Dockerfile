@@ -1,4 +1,4 @@
-FROM registry.fedoraproject.org/fedora:35
+FROM registry.fedoraproject.org/fedora:36
 LABEL maintainer="cockpit-devel@lists.fedorahosted.org"
 LABEL VERSION=270
 
@@ -12,7 +12,7 @@ RUN /container/install.sh
 
 LABEL INSTALL="docker run --rm --privileged -v /:/host -e IMAGE=\${IMAGE} \${IMAGE} /container/label-install \${IMAGE}"
 LABEL UNINSTALL="docker run --rm --privileged -v /:/host -e IMAGE=\${IMAGE} \${IMAGE} /container/label-uninstall"
-LABEL RUN="docker run -d --name \${NAME} --privileged --pid=host -v /:/host -e NAME=\${NAME} -e IMAGE=\${IMAGE} \${IMAGE} /container/label-run --local-ssh"
+LABEL RUN="docker run -d --name \${NAME} --privileged --pid=host -v /:/host -e NAME=\${NAME} -e IMAGE=\${IMAGE} \${IMAGE} /container/label-run"
 
 # Look ma, no EXPOSE
 
