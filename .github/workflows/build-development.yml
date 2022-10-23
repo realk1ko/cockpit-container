@@ -10,7 +10,7 @@ jobs:
     permissions:
       contents: read
       packages: write
-    uses: ./build.yml
+    uses: ./build.yml@main
     with:
       ref: ${{ github.ref }}
       tags: "${{ github.repository }}:development"
