@@ -6,10 +6,6 @@ on:
 
 jobs:
   build-development:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
     uses: ./.github/workflows/build.yml
     with:
       ref: ${{ github.ref }}
