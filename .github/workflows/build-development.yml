@@ -1,0 +1,16 @@
+name: Build (Development)
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-development:
+    steps:
+      - uses: .github/workflows/build.yml
+        with:
+          ref: ${{ github.ref }}
+          tags: "${{ github.repository }}:development"
+        secret:
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}

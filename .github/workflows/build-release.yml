@@ -1,0 +1,16 @@
+name: Build (Release)
+
+on:
+  push:
+    tags: [ '*' ]
+
+jobs:
+  build-release:
+    steps:
+      - uses: .github/workflows/build.yml
+        with:
+          ref: ${{ github.ref }}
+          tags: "${{ github.repository }}:${{ github.ref }},${{ github.repository }}:latest"
+        secret:
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
