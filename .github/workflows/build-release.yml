@@ -7,7 +7,7 @@ on:
 jobs:
   build-release:
     steps:
-      - uses: .github/workflows/build.yml
+      - uses: ./build.yml
         with:
           ref: ${{ github.ref }}
           tags: "${{ github.repository }}:${{ github.ref }},${{ github.repository }}:latest"

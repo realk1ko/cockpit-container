@@ -7,7 +7,7 @@ on:
 jobs:
   build-development:
     steps:
-      - uses: .github/workflows/build.yml
+      - uses: ./build.yml
         with:
           ref: ${{ github.ref }}
           tags: "${{ github.repository }}:development"
