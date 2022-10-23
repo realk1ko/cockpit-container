@@ -10,11 +10,10 @@ jobs:
     permissions:
       contents: read
       packages: write
-    steps:
-      - uses: ./build.yml
-        with:
-          ref: ${{ github.ref }}
-          tags: "${{ github.repository }}:${{ github.ref }},${{ github.repository }}:latest"
-        secrets:
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+    uses: ./build.yml
+    with:
+      ref: ${{ github.ref }}
+      tags: "${{ github.repository }}:${{ github.ref }},${{ github.repository }}:latest"
+    secrets:
+      username: ${{ github.actor }}
+      password: ${{ secrets.GITHUB_TOKEN }}
