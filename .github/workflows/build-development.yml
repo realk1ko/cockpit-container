@@ -9,7 +9,7 @@ jobs:
     uses: ./.github/workflows/build.yml
     with:
       ref: ${{ github.ref }}
-      tags: "ghcr.io/${{ github.repository }}:development"
+      tags: "${{ github.repository }}:development"
     secrets:
       username: ${{ github.actor }}
       password: ${{ secrets.GITHUB_TOKEN }}
