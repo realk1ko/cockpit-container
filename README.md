@@ -16,12 +16,36 @@ defunct [cockpit-container](https://github.com/cockpit-project/cockpit-container
 provided ([unintentionally?](https://github.com/cockpit-project/cockpit/issues/17568#issuecomment-1186925794)) by the
 Cockpit Project team.
 
-**In it's current state it is a feature stripped version of the original, using the packages from the latest stable
-Fedora container image.**
+**In it's current state it is a feature stripped version of the original, using the packages from stable Fedora
+container image.**
 
 ## Usage
 
-TBD
+The following tags are published to the GitHub Container Registry:
+
+- `latest` refers to the latest (stable) release I'm personally using
+- `development` refers to the image built on the last commit on the `main` branch
+
+**Releases are currently built manually and pushed to the registry whenever I manage to do so. However, this is subject
+to change.**
+
+Run as you would with any other container from the GHCR:
+
+```
+docker run \
+    -d \
+    --name cockpit \
+    -v cockpit:/etc/cockpit \
+    -p 9090:9090 \
+    ghcr.io/realk1ko/cockpit-docker
+```
+
+The created `cockpit` volume maps to the configuration directory `/etc/cockpit` which should contain all configuration
+files needed by Cockpit, just as it would be if Cockpit was installed natively. Therefore you can refer to the Cockpit
+guides on customization here:
+
+- https://cockpit-project.org/guide/latest/cockpit.conf.5
+- https://cockpit-project.org/guide/latest/https
 
 ## Why provide/use Cockpit as Container?
 

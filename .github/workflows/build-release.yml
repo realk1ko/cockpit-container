@@ -1,15 +1,11 @@
 name: Build (Release)
 
-on:
-  push:
-    tags: [ '*' ]
-
 jobs:
   build-release:
     uses: ./.github/workflows/build.yml
     with:
       ref: ${{ github.ref }}
-      tags: "ghcr.io/${{ github.repository }}:${{ github.ref }},ghcr.io/${{ github.repository }}:latest"
+      tags: "ghcr.io/${{ github.repository }}:latest"
     secrets:
       username: ${{ github.actor }}
       password: ${{ secrets.GITHUB_TOKEN }}
