@@ -11,6 +11,6 @@ jobs:
         with:
           ref: ${{ github.ref }}
           tags: "${{ github.repository }}:development"
-        secret:
+        secrets:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
