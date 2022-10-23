@@ -47,6 +47,8 @@ guides on customization here:
 - https://cockpit-project.org/guide/latest/cockpit.conf.5
 - https://cockpit-project.org/guide/latest/https
 
+Per default the web interface binds to port 9090. Access that port using `https://<YOUR_HOSTNAME>:9090/` to get started.
+
 ## Why provide/use Cockpit as Container?
 
 Cockpit's design in regards to the web interface is - in my opinion - a bit cumbersome. It has several drawbacks that I
