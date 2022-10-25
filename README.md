@@ -2,6 +2,7 @@
 
 # Cockpit via Docker
 
+[![latest](https://img.shields.io/github/v/release/realk1ko/cockpit-docker?label=latest)](https://github.com/realk1ko/cockpit-docker/releases/latest)
 [![license](https://img.shields.io/github/license/realk1ko/cockpit-docker.svg)](https://github.com/realk1ko/cockpit-docker/blob/master/LICENSE)
 
 > The easy-to-use, integrated, glanceable, and open web-based interface for your servers
