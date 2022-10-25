@@ -5,7 +5,7 @@ on:
     branches: [ dev ]
 
 jobs:
-  build-development:
+  build-dev:
     uses: ./.github/workflows/build.yml
     with:
       base_image: docker.io/library/fedora:36
