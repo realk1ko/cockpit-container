@@ -53,7 +53,7 @@ jobs:
           
           rm -f COCKPIT_VERSION
           
-          if [ '${{ inputs.release }}' == 'true' ] && [ $(git ls-remote origin "refs/tags/${cockpit_version}") ]
+          if [ '${{ inputs.release }}' == 'true' ] && [ "$(git ls-remote origin refs/tags/${cockpit_version})" ]
           then
               echo "Version $cockpit_version has already been released."
               exit 1
