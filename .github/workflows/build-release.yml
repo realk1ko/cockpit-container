@@ -7,8 +7,8 @@ jobs:
   build-release:
     uses: ./.github/workflows/build.yml
     with:
-      ref: main
-      tags: "ghcr.io/${{ github.repository }}:latest"
+      base_image: docker.io/library/fedora:36
+      release: true
     secrets:
       username: ${{ github.actor }}
       password: ${{ secrets.GITHUB_TOKEN }}

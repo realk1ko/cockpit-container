@@ -16,18 +16,16 @@ defunct [cockpit-container](https://github.com/cockpit-project/cockpit-container
 provided ([unintentionally?](https://github.com/cockpit-project/cockpit/issues/17568#issuecomment-1186925794)) by the
 Cockpit Project team.
 
-**In it's current state it is a feature stripped version of the original, using the packages from stable Fedora
-container image.**
-
 ## Usage
 
 The following tags are published to the GitHub Container Registry:
 
-- `latest` refers to the latest (stable) release I'm personally using
-- `development` refers to the image built on the last commit on the `main` branch
+- The `latest` tag is updated within a day of a new release of the Cockpit packages for Fedora.
+- The `dev` tag refers to the image automatically built on the last commit on the `dev` branch. **Please do not use
+  this.**
 
-**Releases are currently built manually and pushed to the registry whenever I manage to do so. However, this is subject
-to change.**
+Additionally each published image is tagged with the installed Cockpit version. Refer to the packages
+overview [here](https://github.com/users/realk1ko/packages/container/package/cockpit-docker) for more info.
 
 Run as you would with any other container from the GHCR:
 
@@ -47,7 +45,8 @@ guides on customization here:
 - https://cockpit-project.org/guide/latest/cockpit.conf.5
 - https://cockpit-project.org/guide/latest/https
 
-Per default the web interface binds to port 9090. Access that port using `https://<YOUR_HOSTNAME>:9090/` to get started.
+Per default the web interface binds to port `9090`. Access that port using `https://<YOUR_HOSTNAME>:9090/` to get
+started.
 
 ## Why provide/use Cockpit as Container?
 
@@ -75,3 +74,5 @@ machines and don't really need a load balancer anymore. Direct access to the mac
 1. **Machine configurations are not stored:** Everytime you login on a host you need to enter it's hostname. If you
    decide to create connections via the sidebar after logging in, be warned: The connections are not saved.
 2. **SSH authentication is planned but not supported right now.**
+3. **Support for branding options**
+4. **Configuration via environment variables/arguments instead of mounting the configuration file**

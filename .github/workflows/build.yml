@@ -3,12 +3,12 @@ name: Build
 on:
   workflow_call:
     inputs:
-      ref:
-        required: true
+      base_image:
         type: string
-      tags:
         required: true
-        type: string
+      release:
+        type: boolean
+        required: true
     secrets:
       username:
         required: true
@@ -18,31 +18,78 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-        with:
-          ref: ${{ inputs.ref }}
 
-      - name: QEMU Setup
+      - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
 
-      - name: Docker Buildx Setup
+      - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
-      - name: Registry Login
+      - name: Login to registry
         uses: docker/login-action@v2
         with:
           registry: ghcr.io
           username: ${{ secrets.username }}
           password: ${{ secrets.password }}
 
-      - name: Build and Push
+      # FIXME this is kind of hacky, but for some reason $GITHUB_OUTPUT and $GITHUB_ENV just don't work here
+      - name: Get Cockpit version (workaround)
+        uses: addnab/docker-run-action@v3
+        with:
+          image: ${{ inputs.base_image }}
+          options: -v ${{ github.workspace }}:/workspace
+          shell: bash
+          run: |
+            dnf info -q cockpit-ws | sed -e '/^Version/!d' -e 's/Version  *:  *//g' | tr -d '\n' > /workspace/COCKPIT_VERSION
+
+      - name: Get Cockpit version
+        id: get-cockpit-version
+        shell: bash
+        run: |
+          cockpit_version=$(cat ${{ github.workspace }}/COCKPIT_VERSION)
+          
+          rm -f COCKPIT_VERSION
+          
+          if [ '${{ inputs.release }}' -eq 'true' ] && [ $(git tag -l "$cockpit_version") ]
+          then
+              echo "Version $cockpit_version has already been released."
+              exit 1
+          fi
+          
+          echo "cockpit_version=$cockpit_version" >> $GITHUB_OUTPUT
+
+      - name: Prepare tags
+        id: prepare-tags
+        shell: bash
+        run: |
+          tags=''
+          
+          if [ '${{ inputs.release }}' -eq 'true' ]
+          then
+            tags+="ghcr.io/${{ github.repository }}:${{ steps.get-cockpit-version.outputs.cockpit_version }},"
+            tags+='ghcr.io/${{ github.repository }}:latest'
+          else
+            tags+='ghcr.io/${{ github.repository }}:dev'
+          fi
+          
+          echo "tags=$tags" >> $GITHUB_OUTPUT
+
+      - name: Build and push
+        id: build-and-push
         uses: docker/build-push-action@v3
         with:
-          platforms: linux/amd64
           push: true
-          tags: ${{ inputs.tags }}
+          build-args: |
+            BASE_IMAGE=${{ inputs.base_image }}
+            COCKPIT_VERSION=${{ steps.get-cockpit-version.outputs.cockpit_version }}
+          tags: ${{ steps.prepare-tags.outputs.tags }}
+
+      - uses: ncipollo/release-action@v1
+        if: ${{ inputs.release }}
+        with:
+          token: ${{ secrets.password }}
+          tag: ${{ steps.get-cockpit-version.outputs.cockpit_version }}
+          body: "https://github.com/realk1ko/cockpit-docker/pkgs/container/cockpit-docker/${{ steps.build-and-push.outputs.imageid }}?tag=${{ steps.get-cockpit-version.outputs.cockpit_version }}"

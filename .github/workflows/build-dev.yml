@@ -8,8 +8,8 @@ jobs:
   build-development:
     uses: ./.github/workflows/build.yml
     with:
-      ref: ${{ github.ref }}
-      tags: "ghcr.io/${{ github.repository }}:dev"
+      base_image: docker.io/library/fedora:36
+      release: false
     secrets:
       username: ${{ github.actor }}
       password: ${{ secrets.GITHUB_TOKEN }}
