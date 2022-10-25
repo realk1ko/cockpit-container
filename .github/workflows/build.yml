@@ -43,8 +43,6 @@ jobs:
           options: -v ${{ github.workspace }}:/workspace
           shell: bash
           run: |
-            set -xe 
-            
             dnf info -q cockpit-ws | sed -e '/^Version/!d' -e 's/Version  *:  *//g' | tr -d '\n' > /workspace/COCKPIT_VERSION
 
       - name: Get Cockpit version
