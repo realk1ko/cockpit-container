@@ -14,6 +14,6 @@ RUN dnf install -y cockpit-ws-${COCKPIT_VERSION} cockpit-bridge-${COCKPIT_VERSIO
     dnf clean all && \
     echo 'NAME=default\nID=default' > /etc/os-release
 
-ADD ./container/ container
+ADD ./container/ /
 
 CMD ["/usr/local/bin/cockpit-docker-run.sh"]
