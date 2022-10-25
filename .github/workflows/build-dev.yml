@@ -2,14 +2,14 @@ name: Build (Development)
 
 on:
   push:
-    branches: [ main ]
+    branches: [ dev ]
 
 jobs:
   build-development:
     uses: ./.github/workflows/build.yml
     with:
       ref: ${{ github.ref }}
-      tags: "ghcr.io/${{ github.repository }}:development"
+      tags: "ghcr.io/${{ github.repository }}:dev"
     secrets:
       username: ${{ github.actor }}
       password: ${{ secrets.GITHUB_TOKEN }}
