@@ -93,4 +93,4 @@ jobs:
         with:
           token: ${{ secrets.password }}
           tag: ${{ steps.get-cockpit-version.outputs.cockpit_version }}
-          body: "https://github.com/realk1ko/cockpit-docker/pkgs/container/cockpit-docker/${{ steps.build-and-push.outputs.digest }}?tag=${{ steps.get-cockpit-version.outputs.cockpit_version }}"
+          body: "https://github.com/realk1ko/cockpit-docker/pkgs/container/cockpit-docker/${{ steps.build-and-push.outputs.digest }}"
