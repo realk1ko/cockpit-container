@@ -59,9 +59,7 @@ jobs:
           
           if [ '${{ inputs.release }}' = 'true' ]
           then
-              token=$(curl -u "${{ secrets.username }}:${{ secrets.password }}" "https://ghcr.io/token\?scope\=repository:${{ github.repository }}:pull" | jq -r .token)
-          
-              if ! curl --head --fail -H "Authorization: Bearer ${token}" "https://ghcr.io/v2/{{ github.repository }}/manifests/${cockpit_version}"
+              if ! curl --head --fail -H "Authorization: Bearer ${{ secrets.password }}" "https://ghcr.io/v2/{{ github.repository }}/manifests/${cockpit_version}"
               then
                 echo "Version $cockpit_version has already been released."
                 exit 1
@@ -99,10 +97,3 @@ jobs:
 #            BASE_IMAGE=${{ inputs.base_image }}
 #            COCKPIT_VERSION=${{ steps.get-cockpit-version.outputs.cockpit_version }}
 #          tags: ${{ steps.prepare-tags.outputs.tags }}
-#
-#      - name: Prune untagged images
-#        uses: vlaurin/action-ghcr-prune@main
-#        with:
-#          token: ${{ secrets.password }}
-#          container: ${{ github.repository }}
-#          untagged: true
