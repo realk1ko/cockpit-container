@@ -88,6 +88,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           push: true
+          context: .
           build-args: |
             BASE_IMAGE=${{ inputs.base_image }}
             COCKPIT_VERSION=${{ steps.get-cockpit-version.outputs.cockpit_version }}
