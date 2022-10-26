@@ -12,7 +12,7 @@ on:
     secrets:
       username:
         required: true
-      password:
+      token:
         required: true
 
 jobs:
@@ -33,7 +33,7 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ secrets.username }}
-          password: ${{ secrets.password }}
+          password: ${{ secrets.token }}
 
       # FIXME this is kind of hacky, but for some reason $GITHUB_OUTPUT and $GITHUB_ENV just don't work here
       - name: Get Cockpit version (workaround)
@@ -57,7 +57,9 @@ jobs:
           
           rm -f COCKPIT_VERSION
           
-          if [ '${{ inputs.release }}' = 'true' ] && ! curl --head --fail -H "Authorization: Bearer ${{ secrets.password }}" "https://ghcr.io/v2/${{ github.repository }}/manifests/${cockpit_version}"
+          bearer_token = $(echo "${{ secrets.token }}" | base64)
+          
+          if [ '${{ inputs.release }}' = 'true' ] && ! curl --head --fail -H "Authorization: Bearer ${bearer_token}" "https://ghcr.io/v2/${{ github.repository }}/manifests/${cockpit_version}"
           then
               echo "Version $cockpit_version has already been released."
               exit 1

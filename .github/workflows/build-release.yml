@@ -13,4 +13,4 @@ jobs:
       release: true
     secrets:
       username: ${{ github.actor }}
-      password: ${{ secrets.GITHUB_TOKEN }}
+      token: ${{ secrets.GITHUB_TOKEN }}
