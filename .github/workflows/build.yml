@@ -100,4 +100,4 @@ jobs:
         with:
           token: ${{ secrets.password }}
           tag: ${{ steps.get-cockpit-version.outputs.cockpit_version }}
-          body: "`${{ steps.build-and-push.outputs.digest }}`"
+          body: "Digest: `${{ steps.build-and-push.outputs.digest }}`"
