@@ -57,10 +57,15 @@ jobs:
           
           rm -f COCKPIT_VERSION
           
-          if [ '${{ inputs.release }}' = 'true' ] && [ "$(git ls-remote origin refs/tags/${cockpit_version})" ]
+          if [ '${{ inputs.release }}' = 'true' ]
           then
-              echo "Version $cockpit_version has already been released."
-              exit 1
+              token=$(curl -u "${{ secrets.username }}:${{ secrets.password }}" "https://ghcr.io/token\?scope\=repository:${{ github.repository }}:pull" | jq -r .token)
+          
+              if ! curl --head --fail -H "Authorization: Bearer ${token}" "https://ghcr.io/v2/{{ github.repository }}/manifests/${cockpit_version}"
+              then
+                echo "Version $cockpit_version has already been released."
+                exit 1
+              fi
           fi
           
           echo "cockpit_version=${cockpit_version}" >> $GITHUB_OUTPUT
@@ -83,21 +88,21 @@ jobs:
           
           echo "tags=${tags}" >> $GITHUB_OUTPUT
 
-      - name: Build and push
-        id: build-and-push
-        uses: docker/build-push-action@v3
-        with:
-          push: true
-          context: .
-          build-args: |
-            BASE_IMAGE=${{ inputs.base_image }}
-            COCKPIT_VERSION=${{ steps.get-cockpit-version.outputs.cockpit_version }}
-          tags: ${{ steps.prepare-tags.outputs.tags }}
-
-      - name: Create release
-        uses: ncipollo/release-action@v1
-        if: ${{ inputs.release }}
-        with:
-          token: ${{ secrets.password }}
-          tag: ${{ steps.get-cockpit-version.outputs.cockpit_version }}
-          body: "Digest: `${{ steps.build-and-push.outputs.digest }}`"
+# TODO remove comments after testing
+#      - name: Build and push
+#        id: build-and-push
+#        uses: docker/build-push-action@v3
+#        with:
+#          push: true
+#          context: .
+#          build-args: |
+#            BASE_IMAGE=${{ inputs.base_image }}
+#            COCKPIT_VERSION=${{ steps.get-cockpit-version.outputs.cockpit_version }}
+#          tags: ${{ steps.prepare-tags.outputs.tags }}
+#
+#      - name: Prune untagged images
+#        uses: vlaurin/action-ghcr-prune@main
+#        with:
+#          token: ${{ secrets.password }}
+#          container: ${{ github.repository }}
+#          untagged: true
