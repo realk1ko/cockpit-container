@@ -15,6 +15,6 @@ RUN set -xe && \
     dnf clean all && \
     echo 'NAME=default\nID=default' > /etc/os-release
 
-ADD ./container/ /
+ADD ./container /
 
 CMD ["/usr/local/bin/cockpit-docker-run.sh"]
