@@ -57,7 +57,7 @@ jobs:
           
           rm -f COCKPIT_VERSION
           
-          bearer_token = $(echo "${{ secrets.token }}" | base64)
+          bearer_token=$(echo "${{ secrets.token }}" | base64)
           
           if [ '${{ inputs.release }}' = 'true' ] && ! curl --head --fail -H "Authorization: Bearer ${bearer_token}" "https://ghcr.io/v2/${{ github.repository }}/manifests/${cockpit_version}"
           then
