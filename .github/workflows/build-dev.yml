@@ -9,8 +9,7 @@ jobs:
     uses: ./.github/workflows/build.yml
     with:
       base_image: docker.io/library/fedora:36
-      # TODO remove after finishing testing
-      release: true
+      release: false
     secrets:
       username: ${{ github.actor }}
       token: ${{ secrets.GITHUB_TOKEN }}
