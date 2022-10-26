@@ -59,7 +59,7 @@ jobs:
           
           bearer_token=$(echo "${{ secrets.token }}" | base64)
           
-          if [ '${{ inputs.release }}' = 'true' ] && ! curl --head --fail -H "Authorization: Bearer ${bearer_token}" "https://ghcr.io/v2/${{ github.repository }}/manifests/${cockpit_version}"
+          if [ '${{ inputs.release }}' = 'true' ] && curl --head --fail -H "Authorization: Bearer ${bearer_token}" "https://ghcr.io/v2/${{ github.repository }}/manifests/${cockpit_version}"
           then
               echo "Version $cockpit_version has already been released."
               exit 1
@@ -85,14 +85,13 @@ jobs:
           
           echo "tags=${tags}" >> $GITHUB_OUTPUT
 
-# TODO remove comments after testing
-#      - name: Build and push
-#        id: build-and-push
-#        uses: docker/build-push-action@v3
-#        with:
-#          push: true
-#          context: .
-#          build-args: |
-#            BASE_IMAGE=${{ inputs.base_image }}
-#            COCKPIT_VERSION=${{ steps.get-cockpit-version.outputs.cockpit_version }}
-#          tags: ${{ steps.prepare-tags.outputs.tags }}
+      - name: Build and push
+        id: build-and-push
+        uses: docker/build-push-action@v3
+        with:
+          push: true
+          context: .
+          build-args: |
+            BASE_IMAGE=${{ inputs.base_image }}
+            COCKPIT_VERSION=${{ steps.get-cockpit-version.outputs.cockpit_version }}
+          tags: ${{ steps.prepare-tags.outputs.tags }}
