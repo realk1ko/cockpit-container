@@ -1,6 +1,6 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-set -xe
+set -euo pipefail
 
 # always create self signed certificate if none was provided
 /usr/libexec/cockpit-certificate-ensure

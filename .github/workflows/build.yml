@@ -43,15 +43,15 @@ jobs:
           options: -v ${{ github.workspace }}:/workspace
           shell: bash
           run: |
-            set -x
+            set -euo pipefail
             
-            dnf info -q cockpit-ws | sed -e '/^Version/!d' -e 's/Version  *:  *//g' | tr -d '\n' > /workspace/COCKPIT_VERSION
+            dnf info -q cockpit-ws | sed -e '/^Version/!d' -e 's/Version  *:  *//g' | tr -d '\n' > /workspace/COCKPIT_VERSION || :
 
       - name: Get Cockpit version
         id: get-cockpit-version
         shell: bash
         run: |
-          set -xe 
+          set -euo pipefail
           
           cockpit_version=$(cat ${{ github.workspace }}/COCKPIT_VERSION)
           
@@ -59,8 +59,7 @@ jobs:
           
           bearer_token=$(echo "${{ secrets.token }}" | base64)
           
-          if [ '${{ inputs.release }}' = 'true' ] && curl --head --fail -H "Authorization: Bearer ${bearer_token}" "https://ghcr.io/v2/${{ github.repository }}/manifests/${cockpit_version}"
-          then
+          if [[ '${{ inputs.release }}' = 'true' ]] && curl -sf -H "Authorization: Bearer ${bearer_token}" "https://ghcr.io/v2/${{ github.repository }}/manifests/${cockpit_version}"; then
               echo "Version $cockpit_version has already been released."
               exit 1
           fi
@@ -71,12 +70,11 @@ jobs:
         id: prepare-tags
         shell: bash
         run: |
-          set -xe 
+          set -euo pipefail
           
           tags=''
           
-          if [ '${{ inputs.release }}' = 'true' ]
-          then
+          if [[ '${{ inputs.release }}' = 'true' ]]; then
             tags+="ghcr.io/${{ github.repository }}:${{ steps.get-cockpit-version.outputs.cockpit_version }},"
             tags+='ghcr.io/${{ github.repository }}:latest'
           else
