@@ -59,7 +59,7 @@ jobs:
           
           bearer_token=$(echo "${{ secrets.token }}" | base64)
           
-          if [[ '${{ inputs.release }}' = 'true' ]] && curl -sf -H "Authorization: Bearer ${bearer_token}" "https://ghcr.io/v2/${{ github.repository }}/manifests/${cockpit_version}"; then
+          if [[ '${{ inputs.release }}' = 'true' ]] && curl -If -H "Authorization: Bearer ${bearer_token}" "https://ghcr.io/v2/${{ github.repository }}/manifests/${cockpit_version}"; then
               echo "Version $cockpit_version has already been released."
               exit 1
           fi
