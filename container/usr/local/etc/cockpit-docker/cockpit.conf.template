@@ -1,0 +1,6 @@
+[WebService]
+LoginTitle = Cockpit
+RequireHost = true
+
+[Negotiate]
+action = none

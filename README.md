@@ -18,16 +18,7 @@ Cockpit Project team.
 
 ## Usage
 
-The following tags are published to the GitHub Container Registry:
-
-- The `latest` tag is updated within a day of a new release of the Cockpit packages for Fedora.
-- The `dev` tag refers to the image automatically built on the last commit on the `dev` branch. **Please do not use
-  this.**
-
-Additionally each published image is tagged with the installed Cockpit version. Refer to the packages
-overview [here](https://github.com/users/realk1ko/packages/container/package/cockpit-docker) for more info.
-
-Run as you would with any other container from the GHCR:
+### TL;DR
 
 ```
 docker run \
@@ -38,15 +29,62 @@ docker run \
     ghcr.io/realk1ko/cockpit-docker
 ```
 
-The created `cockpit` volume maps to the configuration directory `/etc/cockpit` which should contain all configuration
-files needed by Cockpit, just as it would be if Cockpit was installed natively. Therefore you can refer to the Cockpit
-guides on customization here:
+The `cockpit` volume maps to the configuration directory `/etc/cockpit` which contains all relevant files for Cockpit,
+same as with a native installation.
+
+In case the `cockpit.conf` file is missing in the `/etc/cockpit` directory on startup, the
+default [configuration template](https://github.com/realk1ko/cockpit-docker/blob/main/usr/local/etc/cockpit-docker/cockpit.conf.template)
+will be copied there. For customizing the `cockpit.conf` file you can refer to the following guides:
 
 - https://cockpit-project.org/guide/latest/cockpit.conf.5
 - https://cockpit-project.org/guide/latest/https
 
-Per default the web interface binds to port `9090`. Access that port using `https://<YOUR_HOSTNAME>:9090/` to get
-started.
+Per default the web interface binds to port `9090`. To connect to a managed host, visit the web
+interface via `https://<YOUR_CONTAINER_HOST>:9090/` and login using the credentials of the managed host and it's
+hostname. Make sure that the managed host is reachable by the container and has both SSH and
+the [Cockpit Bridge](https://cockpit-project.org/guide/latest/cockpit-bridge.1.html) component active. The connection
+between the container and the managed host will then be done via SSH.
+
+If no `/etc/ssh/ssh_known_hosts` file is created/mounted, you will be prompted to verify the SSH public key fingerprint
+of the managed host. Approved fingerprints will then be stored in your browser for the next login.
+
+### SSH Key Authentication
+
+The default template for the `cockpit.conf` only allows username and password authentication.
+
+However, the image comes pre-packaged with
+an [utility](https://github.com/realk1ko/cockpit-docker/blob/main/usr/local/bin/cockpit-auth-ssh-key) created by
+the [Cockpit Project Team](https://github.com/cockpit-project) that allows you to use SSH key authentication in addition
+to plain password authentication.
+
+To use key authentication you will need to append the following lines to the `cockpit.conf` file:
+
+```
+[Basic]
+Command = /usr/local/bin/cockpit-auth-ssh-key
+
+[Ssh-Login]
+Command = /usr/local/bin/cockpit-auth-ssh-key
+```
+
+The utility allows you to define an SSH key to be used as identity when connecting to managed hosts. Per default the
+container will use the key stored at `/etc/cockpit/identity`, if it exists. You can provide such a file or override the
+path to your key using the `COCKPIT_SSH_KEY_PATH` environment variable.
+
+The password you enter in the web interface to connect to a managed host is used to decrypt the SSH key, rather than for
+username/password authentication on the managed host. If for some reason the decryption fails, the password will be
+transmitted to the managed host for username/password authentication.
+
+### Tags
+
+The following tags are published to the GitHub Container Registry:
+
+- The `latest` tag is updated within a day of a new release of the Cockpit packages for Fedora.
+- The `dev` tag refers to the image automatically built on the last commit on the `dev` branch. **Please do not use
+  this.**
+
+Additionally each published image is tagged with the installed Cockpit version. Refer to the packages
+overview [here](https://github.com/users/realk1ko/packages/container/package/cockpit-docker) for more info.
 
 ## Why provide/use Cockpit as Container?
 
@@ -62,17 +100,9 @@ installation:
    interfaces**, because in some cases the direct access is simply not an option.
 4. The UI will **not store machine configurations** (connections you have created in the UI) **on all other web
    interface hosts** aside from the one you created the connection on. In other words: Everytime you switch the web
-   interface host, you will have to recreate the connections. **To be fair, this is not better when using the
+   interface host, you will have to recreate the connections. **To be fair, this is the same when using the
    containerized approach.**
 
 Using the containerized approach, you can reduce the effort needed for setup and the regular administrative work, when
 hosting the container(s) on the edge of your network. In essence, you avoid the setup of Cockpit Web Service on all
 machines and don't really need a load balancer anymore. Direct access to the machines, is also not required then.
-
-## Drawbacks/TODOs
-
-1. **Machine configurations are not stored:** Everytime you login on a host you need to enter it's hostname. If you
-   decide to create connections via the sidebar after logging in, be warned: The connections are not saved.
-2. **SSH authentication is planned but not supported right now.**
-3. **Support for branding options**
-4. **Configuration via environment variables/arguments instead of mounting the configuration file**
