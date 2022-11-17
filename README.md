@@ -2,7 +2,7 @@
 
 # Cockpit via Docker
 
-[![License](https://img.shields.io/github/license/realk1ko/cockpit-docker.svg)](https://github.com/realk1ko/cockpit-docker/blob/master/LICENSE)
+[![License](https://img.shields.io/github/license/realk1ko/cockpit-docker.svg)](https://github.com/realk1ko/cockpit-docker/blob/main/LICENSE)
 
 > The easy-to-use, integrated, glanceable, and open web-based interface for your servers
 
@@ -33,7 +33,7 @@ The `cockpit` volume maps to the configuration directory `/etc/cockpit` which co
 same as with a native installation.
 
 In case the `cockpit.conf` file is missing in the `/etc/cockpit` directory on startup, the
-default [configuration template](https://github.com/realk1ko/cockpit-docker/blob/main/usr/local/etc/cockpit-docker/cockpit.conf.template)
+default [configuration template](https://github.com/realk1ko/cockpit-docker/blob/main/container/usr/local/etc/cockpit-docker/cockpit.conf.template)
 will be copied there. For customizing the `cockpit.conf` file you can refer to the following guides:
 
 - https://cockpit-project.org/guide/latest/cockpit.conf.5
@@ -53,7 +53,8 @@ of the managed host. Approved fingerprints will then be stored in your browser f
 The default template for the `cockpit.conf` only allows username and password authentication.
 
 However, the image comes pre-packaged with
-an [utility](https://github.com/realk1ko/cockpit-docker/blob/main/usr/local/bin/cockpit-auth-ssh-key) created by
+an [utility](https://github.com/realk1ko/cockpit-docker/blob/main/container/usr/local/bin/cockpit-auth-ssh-key) created
+by
 the [Cockpit Project Team](https://github.com/cockpit-project) that allows you to use SSH key authentication in addition
 to plain password authentication.
 
