@@ -41,22 +41,24 @@ will be copied there. For customizing the `cockpit.conf` file you can refer to t
 
 Per default the web interface binds to port `9090`. To connect to a managed host, visit the web
 interface via `https://<YOUR_CONTAINER_HOST>:9090/` and login using the credentials of the managed host and it's
-hostname. Make sure that the managed host is reachable by the container and has both SSH and
+hostname.
+
+Make sure that the managed host is reachable by the container and has both SSH and
 the [Cockpit Bridge](https://cockpit-project.org/guide/latest/cockpit-bridge.1.html) component active. The connection
 between the container and the managed host will then be done via SSH.
 
-If no `/etc/ssh/ssh_known_hosts` file is created/mounted, you will be prompted to verify the SSH public key fingerprint
-of the managed host. Approved fingerprints will then be stored in your browser for the next login.
+On login you will be prompted to verify the SSH public key fingerprint of the managed host, if it's not defined in
+`/etc/ssh/ssh_known_hosts`. Approved fingerprints will then be stored in your browser for the next login.
 
 ### SSH Key Authentication
 
 The default template for the `cockpit.conf` only allows username and password authentication.
 
-However, the image comes pre-packaged with
-an [utility](https://github.com/realk1ko/cockpit-docker/blob/main/container/usr/local/bin/cockpit-auth-ssh-key) created
-by
-the [Cockpit Project Team](https://github.com/cockpit-project) that allows you to use SSH key authentication in addition
-to plain password authentication.
+However, the image comes pre-packaged with an
+[utility](https://github.com/realk1ko/cockpit-docker/blob/main/container/usr/local/bin/cockpit-auth-ssh-key) created by
+the
+[Cockpit Project Team](https://github.com/cockpit-project) that allows you to use a **single** specific SSH key as
+identity for Cockpit when connecting to managed hosts.
 
 To use key authentication you will need to append the following lines to the `cockpit.conf` file:
 
@@ -68,13 +70,11 @@ Command = /usr/local/bin/cockpit-auth-ssh-key
 Command = /usr/local/bin/cockpit-auth-ssh-key
 ```
 
-The utility allows you to define an SSH key to be used as identity when connecting to managed hosts. Per default the
-container will use the key stored at `/etc/cockpit/identity`, if it exists. You can provide such a file or override the
-path to your key using the `COCKPIT_SSH_KEY_PATH` environment variable.
+Per default the container will use the key stored at `/etc/cockpit/identity`, if it exists. You can provide such a file
+or override the path to your key using the `COCKPIT_SSH_KEY_PATH` environment variable.
 
-The password you enter in the web interface to connect to a managed host is used to decrypt the SSH key, rather than for
-username/password authentication on the managed host. If for some reason the decryption fails, the password will be
-transmitted to the managed host for username/password authentication.
+The password you enter in the web interface to connect to a managed host is used to decrypt the SSH key. If for some
+reason the decryption fails, the password will be transmitted to the managed host for username/password authentication.
 
 ### Tags
 
