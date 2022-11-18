@@ -89,7 +89,7 @@ jobs:
         with:
           push: true
           context: .
-          platform: linux/amd64,linux/arm64
+          platforms: linux/amd64,linux/arm64
           build-args: |
             BASE_IMAGE=${{ inputs.base_image }}
             COCKPIT_VERSION=${{ steps.get-cockpit-version.outputs.cockpit_version }}
