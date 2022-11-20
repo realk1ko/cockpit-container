@@ -6,6 +6,9 @@ on:
       base_image:
         type: string
         required: true
+      image_name:
+        type: string
+        required: true
       release:
         type: boolean
         required: true
@@ -59,7 +62,7 @@ jobs:
           
           bearer_token=$(echo "${{ secrets.token }}" | base64)
           
-          if [[ "${{ inputs.release }}" = "true" ]] && curl -If -H "Authorization: Bearer ${bearer_token}" "https://ghcr.io/v2/${{ github.repository }}/manifests/${cockpit_version}"; then
+          if [[ "${{ inputs.release }}" = "true" ]] && curl -If -H "Authorization: Bearer ${bearer_token}" "https://ghcr.io/v2/${{ github.actor }}/${{ inputs.image_name }}/manifests/${cockpit_version}"; then
               echo "Version $cockpit_version has already been released."
               exit 1
           fi
@@ -75,10 +78,10 @@ jobs:
           tags=""
           
           if [[ "${{ inputs.release }}" = "true" ]]; then
-            tags+="ghcr.io/${{ github.repository }}:${{ steps.get-cockpit-version.outputs.cockpit_version }},"
-            tags+="ghcr.io/${{ github.repository }}:latest"
+            tags+="ghcr.io/${{ github.actor }}/${{ inputs.image_name }}:${{ steps.get-cockpit-version.outputs.cockpit_version }},"
+            tags+="ghcr.io/${{ github.actor }}/${{ inputs.image_name }}:latest"
           else
-            tags+="ghcr.io/${{ github.repository }}:dev"
+            tags+="ghcr.io/${{ github.actor }}/${{ inputs.image_name }}:dev"
           fi
           
           echo "tags=${tags}" >> $GITHUB_OUTPUT

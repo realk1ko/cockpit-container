@@ -21,7 +21,7 @@ The following tags are published to the GitHub Container Registry:
 - The `:dev` tag refers to the image automatically built on the last commit on the `dev` branch. **Please do not use
   this.**
 - Additionally each published image is tagged with the installed Cockpit version (e. g. `:280`). Refer to the packages
-  overview [here](https://github.com/users/realk1ko/packages/container/package/cockpit-container) for more info.
+  overview [here](https://github.com/users/realk1ko/packages/container/package/cockpit) for more info.
 
 ## Usage
 
@@ -33,7 +33,7 @@ docker run \
     --name cockpit \
     -v cockpit:/etc/cockpit \
     -p 9090:9090 \
-    ghcr.io/realk1ko/cockpit-container
+    ghcr.io/realk1ko/cockpit
 ```
 
 The `cockpit` volume maps to the configuration directory `/etc/cockpit` which contains all relevant files for Cockpit,
