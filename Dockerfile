@@ -22,4 +22,4 @@ RUN set -euo pipefail && \
 
 ENV COCKPIT_SSH_KEY_PATH=/etc/cockpit/identity
 
-CMD ["/usr/local/bin/cockpit-run"]
+CMD ["/usr/local/bin/start"]
