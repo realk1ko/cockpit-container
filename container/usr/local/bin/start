@@ -9,7 +9,7 @@ set -euo pipefail
 /usr/libexec/cockpit-certificate-ensure
 
 # create default configuration file if it does not exist
-[[ -f /etc/cockpit/cockpit.conf ]] || cp /usr/local/etc/cockpit-docker/cockpit.conf.template /etc/cockpit/cockpit.conf
+[[ -f /etc/cockpit/cockpit.conf ]] || cp /usr/local/etc/cockpit-container/cockpit.conf.template /etc/cockpit/cockpit.conf
 
 # startup of ssh-agent
 eval $(ssh-agent -s)

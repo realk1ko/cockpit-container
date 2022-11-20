@@ -7,7 +7,7 @@ ARG COCKPIT_VERSION
 LABEL org.opencontainers.image.title Cockpit
 LABEL org.opencontainers.image.description The easy-to-use, integrated, glanceable, and open web-based interface for your servers
 LABEL org.opencontainers.image.licenses MIT
-LABEL org.opencontainers.image.url https://github.com/realk1ko/cockpit-docker
+LABEL org.opencontainers.image.url https://github.com/realk1ko/cockpit-container
 LABEL maintainer realk1ko <32820057+realk1ko@users.noreply.github.com>
 
 ADD ./container /
