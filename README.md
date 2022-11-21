@@ -25,7 +25,7 @@ The following tags are published to the GitHub Container Registry:
 
 ## Usage
 
-### TL;DR
+### Setup
 
 ```
 docker run \
