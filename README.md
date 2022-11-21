@@ -33,7 +33,7 @@ docker run \
     --name cockpit \
     -v cockpit:/etc/cockpit \
     -p 9090:9090 \
-    ghcr.io/realk1ko/cockpit
+    ghcr.io/realk1ko/cockpit:latest
 ```
 
 The `cockpit` volume maps to the configuration directory `/etc/cockpit` which contains all relevant files for Cockpit,
