@@ -10,6 +10,7 @@ jobs:
     with:
       base_image: docker.io/library/fedora:36
       image_name: cockpit
+      platforms: linux/amd64
       release: false
     secrets:
       username: ${{ github.actor }}

@@ -9,6 +9,9 @@ on:
       image_name:
         type: string
         required: true
+      platforms:
+        type: string
+        required: true
       release:
         type: boolean
         required: true
@@ -92,7 +95,7 @@ jobs:
         with:
           push: true
           context: .
-          platforms: linux/amd64,linux/arm64
+          platforms: ${{ inputs.platforms }}
           build-args: |
             BASE_IMAGE=${{ inputs.base_image }}
             COCKPIT_VERSION=${{ steps.get-cockpit-version.outputs.cockpit_version }}
