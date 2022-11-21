@@ -20,6 +20,6 @@ RUN set -euo pipefail && \
     echo "NAME=default\nID=default" > /etc/os-release && \
     chmod 755 /usr/local/bin/*
 
-ENV COCKPIT_SSH_KEY_PATH=/etc/cockpit/identity
+ENV COCKPIT_SSH_KEY_PATH /etc/cockpit/identity
 
 CMD ["/usr/local/bin/start"]
