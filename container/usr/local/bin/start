@@ -3,7 +3,7 @@
 set -euo pipefail
 
 # create certificate directory if it does not exist, otherwise cockpit-certificate-ensure complains
-[[ -f /etc/cockpit/cockpit.conf ]] || mkdir -p /etc/cockpit/ws-certs.d
+[[ -d /etc/cockpit/ws-certs.d ]] || mkdir -p /etc/cockpit/ws-certs.d
 
 # always create self signed certificate if none was provided
 /usr/libexec/cockpit-certificate-ensure
