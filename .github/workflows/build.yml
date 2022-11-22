@@ -80,7 +80,7 @@ jobs:
             ghcr.io/${{ github.actor }}/${{ inputs.image_name }}
           tags: |
             type=raw,value=latest,enable=${{ inputs.release }}
-            type=raw,value={{ steps.get-cockpit-version.outputs.cockpit_version }},enable=${{ inputs.release }}
+            type=raw,value=${{ steps.get-cockpit-version.outputs.cockpit_version }},enable=${{ inputs.release }}
             
             type=raw,value=edge,enable=${{ !inputs.release }}
             type=sha,enable=${{ !inputs.release }}
