@@ -17,9 +17,10 @@ Cockpit Web Service (`cockpit-ws`).
 
 The following tags are published to the GitHub Container Registry:
 
-- The `:latest` tag is updated within a day of a new release of the Cockpit packages for Fedora.
-- Additionally each published image is tagged with the installed Cockpit version (e. g. `:280`). Refer to the packages
-  overview [here](https://github.com/users/realk1ko/packages/container/package/cockpit) for more info.
+- `:latest`: This is the tag you should be using. is updated within a day of a new release of the Cockpit packages for
+  Fedora automatically. Additionally, each release is tagged with the installed Cockpit (e. g. `:280`).
+- `:edge`: Latest build of the image on the latest commit on the `dev` branch. Each image tagged with this is also
+  tagged with the SHA commit reference it was built on (e. g. `:sha-bb8c5c4`).
 
 ## Usage
 

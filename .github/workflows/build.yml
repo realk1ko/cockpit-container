@@ -74,20 +74,16 @@ jobs:
 
       - name: Prepare tags
         id: prepare-tags
-        shell: bash
-        run: |
-          set -euo pipefail
-          
-          tags=""
-          
-          if [[ "${{ inputs.release }}" = "true" ]]; then
-            tags+="ghcr.io/${{ github.actor }}/${{ inputs.image_name }}:${{ steps.get-cockpit-version.outputs.cockpit_version }},"
-            tags+="ghcr.io/${{ github.actor }}/${{ inputs.image_name }}:latest"
-          else
-            tags+="ghcr.io/${{ github.actor }}/${{ inputs.image_name }}:dev"
-          fi
-          
-          echo "tags=${tags}" >> $GITHUB_OUTPUT
+        uses: docker/metadata-action@v4
+        with:
+          images: |
+            ghcr.io/${{ github.actor }}/${{ inputs.image_name }}
+          tags: |
+            type=raw,value=latest,enable=${{ inputs.release }}
+            type=raw,value={{ steps.get-cockpit-version.outputs.cockpit_version }},enable=${{ inputs.release }}
+            
+            type=raw,value=edge,enable=${{ !inputs.release }}
+            type=sha,enable=${{ !inputs.release }}
 
       - name: Build and push
         id: build-and-push

@@ -1,9 +1,8 @@
-name: Build (Release)
+name: Build (Edge)
 
 on:
-  workflow_dispatch:
-  schedule:
-    - cron: "0 0 * * *"
+  push:
+    branches: [ dev ]
 
 jobs:
   build-release:
@@ -11,8 +10,8 @@ jobs:
     with:
       base_image: docker.io/library/fedora:36
       image_name: cockpit
-      platforms: linux/amd64,linux/arm64
-      release: true
+      platforms: linux/amd64
+      release: false
     secrets:
       username: ${{ github.actor }}
       token: ${{ secrets.GITHUB_TOKEN }}
