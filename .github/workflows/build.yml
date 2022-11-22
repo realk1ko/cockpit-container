@@ -31,7 +31,7 @@ jobs:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
 
-      - name: Set up Docker Buildx
+      - name: Set up Buildx
         uses: docker/setup-buildx-action@v2
 
       - name: Login to registry
@@ -65,7 +65,7 @@ jobs:
           
           bearer_token=$(echo "${{ secrets.token }}" | base64)
           
-          if [[ "${{ inputs.release }}" = "true" ]] && curl -If -H "Authorization: Bearer ${bearer_token}" "https://ghcr.io/v2/${{ github.actor }}/${{ inputs.image_name }}/manifests/${cockpit_version}"; then
+          if [[ "${{ inputs.release }}" = "true" ]] && curl -If -H "Authorization: Bearer ${bearer_token}" "https://ghcr.io/v2/${{ secrets.username }}/${{ inputs.image_name }}/manifests/${cockpit_version}"; then
               echo "Version $cockpit_version has already been released."
               exit 1
           fi
@@ -77,7 +77,7 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: |
-            ghcr.io/${{ github.actor }}/${{ inputs.image_name }}
+            ghcr.io/${{ secrets.username }}/${{ inputs.image_name }}
           tags: |
             type=raw,value=latest,enable=${{ inputs.release }}
             type=raw,value=${{ steps.get-cockpit-version.outputs.cockpit_version }},enable=${{ inputs.release }}
