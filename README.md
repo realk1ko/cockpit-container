@@ -86,19 +86,18 @@ You can also specify the `known_hosts` file Cockpit will use to check fingerprin
 The default template for the `cockpit.conf` only allows username and password authentication.
 
 However, the image comes pre-packaged with an
-[utility](https://github.com/realk1ko/cockpit-container/blob/main/container/usr/local/bin/cockpit-auth-ssh-key) created
-by
-the [Cockpit Project Team](https://github.com/cockpit-project) that allows you to use a **single** specific SSH key as
-identity for Cockpit when connecting to managed hosts.
+[utility](https://github.com/realk1ko/cockpit-container/blob/main/container/usr/local/libexec/cockpit-auth-ssh-key)
+created by the [Cockpit Project Team](https://github.com/cockpit-project) that allows you to use a **single** specific
+SSH key as identity for Cockpit when connecting to managed hosts.
 
 To use key authentication you will need to append the following lines to the `cockpit.conf` file:
 
 ```
 [Basic]
-Command = /usr/local/bin/cockpit-auth-ssh-key
+Command = /usr/local/libexec/cockpit-auth-ssh-key
 
 [Ssh-Login]
-Command = /usr/local/bin/cockpit-auth-ssh-key
+Command = /usr/local/libexec/cockpit-auth-ssh-key
 ```
 
 Per default the container will use the key stored at `/etc/cockpit/identity`, if it exists. You can provide such a file

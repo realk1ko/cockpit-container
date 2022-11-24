@@ -11,8 +11,5 @@ set -euo pipefail
 # create default configuration file if it does not exist
 [[ -f /etc/cockpit/cockpit.conf ]] || cp /usr/local/etc/cockpit-container/cockpit.conf.template /etc/cockpit/cockpit.conf
 
-# startup of ssh-agent
-eval $(ssh-agent -s)
-
 # startup of cockpit
 exec /usr/libexec/cockpit-ws --local-ssh
