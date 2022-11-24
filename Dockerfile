@@ -18,7 +18,8 @@ RUN set -euo pipefail && \
     dnf install -y supervisor cockpit-ws-${COCKPIT_VERSION} cockpit-bridge-${COCKPIT_VERSION} python3 openssh-clients && \
     dnf clean all && \
     echo "NAME=default\nID=default" > /etc/os-release && \
-    chmod 755 /usr/local/bin/*
+    chmod 755 /usr/local/bin/* && \
+    chmod 755 /usr/local/libexec/*
 
 ENV COCKPIT_SSH_KEY_PATH /etc/cockpit/identity
 
