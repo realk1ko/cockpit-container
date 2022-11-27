@@ -15,6 +15,8 @@ ADD ./container /
 ADD ./LICENSE /
 
 RUN set -euo pipefail && \
+    mkdir -p /usr/local/libexec/ && \
+    curl -o /usr/local/libexec/cockpit-auth-ssh-key https://raw.githubusercontent.com/cockpit-project/cockpit/main/containers/ws/cockpit-auth-ssh-key && \
     dnf install -y supervisor cockpit-ws-${COCKPIT_VERSION} cockpit-bridge-${COCKPIT_VERSION} python3 openssh-clients && \
     dnf clean all && \
     echo "NAME=default\nID=default" > /etc/os-release && \
