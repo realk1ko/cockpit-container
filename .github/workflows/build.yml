@@ -60,6 +60,7 @@ jobs:
           set -euo pipefail
           
           cockpit_version=$(cat ${{ github.workspace }}/COCKPIT_VERSION)
+          skip_workflow=0
           
           rm -f COCKPIT_VERSION
           
@@ -67,14 +68,16 @@ jobs:
           
           if [[ "${{ inputs.release }}" = "true" ]] && curl -If -H "Authorization: Bearer ${bearer_token}" "https://ghcr.io/v2/${{ secrets.username }}/${{ inputs.image_name }}/manifests/${cockpit_version}"; then
               echo "Version $cockpit_version has already been released."
-              exit 1
+              skip_workflow=1
           fi
           
           echo "cockpit_version=${cockpit_version}" >> $GITHUB_OUTPUT
+          echo "skip_workflow=${skip_workflow}" >> $GITHUB_OUTPUT
 
       - name: Prepare tags
         id: prepare-tags
         uses: docker/metadata-action@v4
+        if: ${{ !steps.get-cockpit-version.outputs.skip_workflow }}
         with:
           images: |
             ghcr.io/${{ secrets.username }}/${{ inputs.image_name }}
@@ -88,6 +91,7 @@ jobs:
       - name: Build and push
         id: build-and-push
         uses: docker/build-push-action@v3
+        if: ${{ !steps.get-cockpit-version.outputs.skip_workflow }}
         with:
           push: true
           context: .
