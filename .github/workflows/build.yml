@@ -60,7 +60,7 @@ jobs:
           set -euo pipefail
           
           cockpit_version=$(cat ${{ github.workspace }}/COCKPIT_VERSION)
-          skip_workflow=0
+          skip_workflow=false
           
           rm -f COCKPIT_VERSION
           
@@ -68,7 +68,7 @@ jobs:
           
           if [[ "${{ inputs.release }}" = "true" ]] && (curl -If -H "Authorization: Bearer ${bearer_token}" "https://ghcr.io/v2/${{ secrets.username }}/${{ inputs.image_name }}/manifests/${cockpit_version}" || false); then
               echo "Version ${cockpit_version} has already been released."
-              skip_workflow=1
+              skip_workflow=true
           fi
           
           echo "cockpit_version=${cockpit_version}" >> $GITHUB_OUTPUT
