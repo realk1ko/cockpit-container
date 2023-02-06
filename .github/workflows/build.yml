@@ -57,7 +57,7 @@ jobs:
         id: get-cockpit-version
         shell: bash
         run: |
-          set -euo pipefail
+          set -eu #o pipefail
           
           cockpit_version=$(cat ${{ github.workspace }}/COCKPIT_VERSION)
           skip_workflow=0
@@ -67,7 +67,7 @@ jobs:
           bearer_token=$(echo "${{ secrets.token }}" | base64)
           
           if [[ "${{ inputs.release }}" = "true" ]] && curl -If -H "Authorization: Bearer ${bearer_token}" "https://ghcr.io/v2/${{ secrets.username }}/${{ inputs.image_name }}/manifests/${cockpit_version}"; then
-              echo "Version $cockpit_version has already been released."
+              echo "Version ${cockpit_version} has already been released."
               skip_workflow=1
           fi
           
