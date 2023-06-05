@@ -9,7 +9,7 @@ jobs:
   build-release:
     uses: ./.github/workflows/build.yml
     with:
-      base_image: docker.io/library/fedora:36
+      base_image: docker.io/library/fedora:latest
       image_name: cockpit
       platforms: linux/amd64,linux/arm64
       release: true
