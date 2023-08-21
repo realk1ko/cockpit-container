@@ -50,8 +50,8 @@ jobs:
           shell: bash
           run: |
             set -euo pipefail
-            
-            dnf info -q cockpit-ws | sed -e "/^Version/!d" -e "s/Version  *:  *//g" | tr -d "\n" > /workspace/COCKPIT_VERSION || :
+
+            dnf list -q cockpit-ws | tail -n +2 |  tr -s " " | cut -d " " -f2 | tr -d "\n" > /workspace/COCKPIT_VERSION || :
 
       - name: Get Cockpit version
         id: get-cockpit-version
@@ -60,6 +60,7 @@ jobs:
           set -euo pipefail
           
           cockpit_version=$(cat ${{ github.workspace }}/COCKPIT_VERSION)
+          cockpit_version_tag=$(echo -n ${cockpit_version} | tr ":" "-")
           skip_workflow=0
           
           rm -f COCKPIT_VERSION
@@ -72,6 +73,7 @@ jobs:
           fi
           
           echo "cockpit_version=${cockpit_version}" >> $GITHUB_OUTPUT
+          echo "cockpit_version_tag=${cockpit_version_tag}" >> $GITHUB_OUTPUT
           echo "skip_workflow=${skip_workflow}" >> $GITHUB_OUTPUT
 
       - name: Prepare tags
@@ -83,7 +85,7 @@ jobs:
             ghcr.io/${{ secrets.username }}/${{ inputs.image_name }}
           tags: |
             type=raw,value=latest,enable=${{ inputs.release }}
-            type=raw,value=${{ steps.get-cockpit-version.outputs.cockpit_version }},enable=${{ inputs.release }}
+            type=raw,value=${{ steps.get-cockpit-version.outputs.cockpit_version_tag }},enable=${{ inputs.release }}
             
             type=raw,value=edge,enable=${{ !inputs.release }}
             type=sha,enable=${{ !inputs.release }}
