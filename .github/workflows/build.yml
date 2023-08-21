@@ -41,7 +41,7 @@ jobs:
           username: ${{ secrets.username }}
           password: ${{ secrets.token }}
 
-      # FIXME this is kind of hacky, but for some reason $GITHUB_OUTPUT and $GITHUB_ENV just don't work here
+      # FIXME see https://github.com/addnab/docker-run-action/issues/41
       - name: Get Cockpit version (workaround)
         uses: addnab/docker-run-action@v3
         with:
