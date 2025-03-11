@@ -1,4 +1,7 @@
-![Cockpit Logo](cockpit-logo.png)
+# Important Notice
+
+While this container is being updated regularly, it is highly recommended to use [the official Cockpit container
+available at Quay](https://quay.io/repository/cockpit/ws).
 
 # Cockpit Container
 
